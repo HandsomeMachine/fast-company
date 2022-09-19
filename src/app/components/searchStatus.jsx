@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 const SearchStatus = ({ length }) => {
   if (length === 0) {
@@ -23,6 +24,10 @@ const SearchStatus = ({ length }) => {
   };
 
   return <h2 className="badge fs-3 bg-primary">{renderPhrase(length)}</h2>;
+};
+
+SearchStatus.propTypes = {
+  length: PropTypes.number.isRequired
 };
 
 export default SearchStatus;

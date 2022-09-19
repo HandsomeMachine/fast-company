@@ -23,14 +23,14 @@ const App = () => {
   return (
     <div>
       <SearchStatus length={users.length} />
-      {users.length ? (
+      {users.length && (
         <Users
           users={users}
           id={users._id}
           onDelete={handleDelete}
           onToggleBookMark={handleToggleBookMark}
         />
-      ) : null}
+      )}
     </div>
   );
 };
