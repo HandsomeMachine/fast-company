@@ -13,6 +13,17 @@ const TableHeader = ({ onSort, selectedSort, columns }) => {
         }
     };
 
+    const handleToggleSortIcon = (item) => {
+        const carretUp = <i className="bi bi-caret-up-fill ms-1"></i>;
+        const carretDown = <i className="bi bi-caret-down-fill ms-1"></i>;
+        if (selectedSort.path === item) {
+            if (selectedSort.order === "asc") {
+                return carretUp;
+            }
+            return carretDown;
+        }
+    };
+
     return (
         <thead>
             <tr>
@@ -28,6 +39,7 @@ const TableHeader = ({ onSort, selectedSort, columns }) => {
                         scope="col"
                     >
                         {columns[column].name}
+                        {handleToggleSortIcon(columns[column].path)}
                     </th>
                 ))}
             </tr>
