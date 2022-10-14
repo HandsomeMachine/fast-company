@@ -13,15 +13,15 @@ const TableHeader = ({ onSort, selectedSort, columns }) => {
         }
     };
 
-    const handleToggleSortIcon = (item) => {
-        const carretUp = <i className="bi bi-caret-up-fill ms-1"></i>;
-        const carretDown = <i className="bi bi-caret-down-fill ms-1"></i>;
-        if (selectedSort.path === item) {
+    const renderSortArrow = (selectedSort, currentPath) => {
+        if (selectedSort.path === currentPath) {
             if (selectedSort.order === "asc") {
-                return carretUp;
+                return <i className="bi bi-caret-down-fill"></i>;
+            } else {
+                return <i className="bi bi-caret-up-fill"></i>;
             }
-            return carretDown;
         }
+        return null;
     };
 
     return (
@@ -38,8 +38,8 @@ const TableHeader = ({ onSort, selectedSort, columns }) => {
                         {...{ role: columns[column].path && "button" }}
                         scope="col"
                     >
-                        {columns[column].name}
-                        {handleToggleSortIcon(columns[column].path)}
+                        {columns[column].name}{" "}
+                        {renderSortArrow(selectedSort, columns[column].path)}
                     </th>
                 ))}
             </tr>

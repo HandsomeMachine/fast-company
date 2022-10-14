@@ -1,63 +1,57 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import _ from "lodash";
 import { paginate } from "../utils/paginate";
+import api from "../api";
 import Pagination from "./pagination";
-import API from "../api";
 import GroupList from "./groupList";
 import SearchStatus from "./searchStatus";
 import UserTable from "./usersTable";
+import _ from "lodash";
 
-const Users = () => {
+const usersList = () => {
     const [currentPage, setCurrentPage] = useState(1);
-    const [professions, setProfessions] = useState();
+    const [professions, setProfession] = useState();
     const [selectedProf, setSelectedProf] = useState();
-    const [sortBy, setSortBy] = useState({ iter: "name", order: "asc" });
+    const [sortBy, setSortBy] = useState({ path: "name", order: "asc" });
     const pageSize = 8;
 
-    const [users, setUsers] = useState([]);
+    const [users, setUsers] = useState();
 
     useEffect(() => {
-        API.users.fetchAll().then((data) => setUsers(data));
-    });
+        api.users.fetchAll().then((data) => setUsers(data));
+    }, []);
 
     const handleDelete = (userId) => {
         setUsers(users.filter((user) => user._id !== userId));
     };
 
     const handleToggleBookMark = (id) => {
-        setUsers(
-            users.map((user) => {
-                if (user._id === id) {
-                    return { ...user, bookmark: !user.bookmark };
-                }
-                return user;
-            })
-        );
+        const newArray = users.map((user) => {
+            if (user._id === id) {
+                return { ...user, bookmark: !user.bookmark };
+            }
+            return user;
+        });
+        setUsers(newArray);
     };
 
     useEffect(() => {
-        API.professions.fetchAll().then((data) => setProfessions(data));
+        api.professions.fetchAll().then((data) => setProfession(data));
     }, []);
 
     useEffect(() => {
         setCurrentPage(1);
     }, [selectedProf]);
 
-    const handlePageChange = (pageIndex) => {
-        setCurrentPage(pageIndex);
-    };
-
     const handleProfessionSelect = (item) => {
         setSelectedProf(item);
     };
 
+    const handlePageChange = (pageIndex) => {
+        setCurrentPage(pageIndex);
+    };
     const handleSort = (item) => {
         setSortBy(item);
-    };
-
-    const clearFilter = () => {
-        setSelectedProf();
     };
 
     if (users) {
@@ -75,26 +69,30 @@ const Users = () => {
             [sortBy.path],
             [sortBy.order]
         );
+
         const usersCrop = paginate(sortedUsers, currentPage, pageSize);
+        const clearFilter = () => {
+            setSelectedProf();
+        };
 
         return (
             <div className="d-flex">
                 {professions && (
                     <div className="d-flex flex-column flex-shrink-0 p-3">
                         <GroupList
-                            items={professions}
                             selectedItem={selectedProf}
+                            items={professions}
                             onItemSelect={handleProfessionSelect}
                         />
                         <button
                             className="btn btn-secondary mt-2"
                             onClick={clearFilter}
                         >
+                            {" "}
                             Очистить
                         </button>
                     </div>
                 )}
-
                 <div className="d-flex flex-column">
                     <SearchStatus length={count} />
                     {count > 0 && (
@@ -121,8 +119,8 @@ const Users = () => {
     return "loading...";
 };
 
-Users.propTypes = {
-    users: PropTypes.oneOfType([PropTypes.object, PropTypes.array])
+usersList.propTypes = {
+    users: PropTypes.array
 };
 
-export default Users;
+export default usersList;
