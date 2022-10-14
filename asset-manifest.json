@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/fast-company/static/css/main.bae71e8c.css",
+    "main.js": "/fast-company/static/js/main.492bd2bb.js",
+    "index.html": "/fast-company/index.html",
+    "main.bae71e8c.css.map": "/fast-company/static/css/main.bae71e8c.css.map",
+    "main.492bd2bb.js.map": "/fast-company/static/js/main.492bd2bb.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.bae71e8c.css",
+    "static/js/main.492bd2bb.js"
+  ]
+}
